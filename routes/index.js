@@ -4,7 +4,7 @@ var con = require('../controllers'),
 module.exports = (router) => {
   /* GET home page. */
   router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Express' });
+    res.send('welcome to kripter messenger!');
   });
   router.route('/app')
     .get(helpers.checkAppId, con.getapplications)
