@@ -8,8 +8,8 @@ var express = require('express'),
     config = require('config'),
     mongoose = require('mongoose'),
     app = express();
-
-mongoose.connect('mongodb://' + config.database.HOST + ':' + config.database.PORT + '/' + config.database.NAME);
+    
+mongoose.connect('mongodb://' + config.database.USERNAME + ':' + config.database.PASSWORD + '@' + config.database.HOST + ':' + config.database.PORT + '/' + config.database.NAME);
 
 // Add headers
 app.use(function (req, res, next) {
