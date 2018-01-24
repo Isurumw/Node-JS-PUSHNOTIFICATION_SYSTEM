@@ -57,8 +57,8 @@ module.exports = {
     },
     removedevicetoken: (req, res) => {
         devicetoken.remove({ token: req.param('token') }, (err, result) => {
-            if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
-            res.status(HttpStatus.OK).json(result);
+            if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({success: false});
+            res.status(HttpStatus.OK).json({success: true});
         });
     },
     uplodacert: (req, res) => {
