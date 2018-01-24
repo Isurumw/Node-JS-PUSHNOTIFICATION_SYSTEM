@@ -5,11 +5,11 @@
         "PORT": "3000"
     },
     "database": {
-        "HOST": "xxx",
+        "HOST": "ds261527.mlab.com",
         "USERNAME": "admin",
-        "PASSWORD": "xxx",
-        "PORT": "xxx",
-        "NAME": "xxx"
+        "PASSWORD": "kripter_2017",
+        "PORT": "61527",
+        "NAME": "kripter_18_01_2018"
     },
     "redis": {
         "HOST": "127.0.0.1",
