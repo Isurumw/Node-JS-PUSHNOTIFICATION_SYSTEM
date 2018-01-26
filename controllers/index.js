@@ -10,40 +10,40 @@ var HttpStatus = require("http-status-codes"),
 module.exports = {
     getapplications: (req, res) => {
         application.findOne({ _id: req.app._id }, (err, result) => {
-            if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+            if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({success: false});
             res.status(HttpStatus.OK).json(result);
         });
     },
     registerapplication: (req, res) => {
         let newApplication = new application(req.body);
         newApplication.save((err, result) => {
-            if (err) return res.status(HttpStatus.BAD_REQUEST).json(err);
+            if (err) return res.status(HttpStatus.BAD_REQUEST).json({success: false});
             saveApplication(result);
             res.status(HttpStatus.OK).json(result);
         });
     },
     editapplication: (req, res) => {
         application.findOneAndUpdate({ _id: req.app._id }, { $set: req.body }, { new: true }, (err, result) => {
-            if (err) return res.status(HttpStatus.BAD_REQUEST).json(err);
+            if (err) return res.status(HttpStatus.BAD_REQUEST).json({success: false});
             saveApplication(result);
             res.status(HttpStatus.OK).json(result);
         });
     },
     removeapplication: (req, res) => {
         application.remove({ _id: req.app._id }, (err, result) => {
-            if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+            if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({success: false});
             res.status(HttpStatus.OK).json(result);
         });
     },
     getdevicetokens: (req, res) => {
         devicetoken.find({ appid: req.app._id }, (err, result) => {
-            if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+            if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({success: false});
             res.status(HttpStatus.OK).json(result);
         });
     },
     getdevicetokensforuser: (req, res) => {
         devicetoken.find({ appid: req.app._id, userid: req.param('id') }, (err, result) => {
-            if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+            if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({success: false});
             res.status(HttpStatus.OK).json(result);
         });
     },
@@ -51,7 +51,7 @@ module.exports = {
         req.body.appid = req.app._id;
         let newDevicetoken = new devicetoken(req.body);
         newDevicetoken.save((err, result) => {
-            if (err) return res.status(HttpStatus.BAD_REQUEST).json(err);
+            if (err) return res.status(HttpStatus.GONE).json({success: false, message: "Token already exist"});
             res.status(HttpStatus.OK).json(result);
         });
     },
@@ -62,13 +62,12 @@ module.exports = {
         });
     },
     uplodacert: (req, res) => {
-
         var busboy = new Busboy({ headers: req.headers });
         busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
             console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
             var folderPath = './cert/' + req.app.name + '_' + req.app._id;
             fs.emptyDir(folderPath, err => {
-                if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+                if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({success: false});
                 var saveTo = path.join(folderPath, path.basename(fieldname + '.pem'));
                 file.pipe(fs.createWriteStream(saveTo));
             });
@@ -84,7 +83,7 @@ module.exports = {
         let type = req.body.categoryid == config.notification.CATEGORYID[0] ? config.notification.TYPE[1] : config.notification.TYPE[0];
         let query = { appid: req.app._id, userid: req.body.to, type: type };
         devicetoken.find(query, (err, result) => {
-            if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+            if (err) return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({success: false});
 
             var tokensIos = result.filter(obj => obj.devicetype == config.notification.DEVICETYPE[0]).map(a => a.token);
             var tokensAndroid = result.filter(obj => obj.devicetype == config.notification.DEVICETYPE[1]).map(a => a.token);
