@@ -99,7 +99,8 @@ module.exports = {
                 threadid: req.body.from,
                 deviceType : req.body.devicetype,
                 tokensIos: tokensIos,
-                tokensAndroid: tokensAndroid
+                tokensAndroid: tokensAndroid,
+                timestamp: req.body.timestamp
             }
 
             helpers.sendNotification(object).then(result => {

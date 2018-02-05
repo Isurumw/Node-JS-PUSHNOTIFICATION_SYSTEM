@@ -23,7 +23,7 @@ exports.sendNotification = (object) => {
             'message': object.message,
             'badge': 0,
             'sound': config.notification.SOUND,
-            'payload' : { 'thread-id' : object.threadid, 'category-id' : object.categoryid }
+            'payload' : { 'thread-id' : object.threadid, 'category-id' : object.categoryid, timestamp: object.timestamp }
         };
         let resources = []
         if (object.certpath && object.tokensIos.length != 0) {
